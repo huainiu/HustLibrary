@@ -7,6 +7,14 @@
 //
 
 #import "LAppDelegate.h"
+#import "LHomeViewController.h"
+#import "LBookListsViewController.h"
+#import "LEverBorrowingBooksViewController.h"
+#import "LLoginViewController.h"
+#import "AFNetworkActivityIndicatorManager.h"
+#import "LDBManager.h"
+
+#define UIColorFromRGBA(r, g, b, a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 
 @implementation LAppDelegate
 
@@ -19,7 +27,59 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UITabBar appearance] setTintColor:UIColorFromRGBA(76, 220, 99, 1.0)];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGBA(76, 220, 99, 1.0)];
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIColor whiteColor], NSForegroundColorAttributeName,
+                                                           [UIFont boldSystemFontOfSize:18.0], NSFontAttributeName, nil]];
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
+        [[LDBManager sharedManager] addObject:@{@"name": @"defaultBookList"}
+                                     toEntity:@"BookLists"];
+        [[LDBManager sharedManager] addObject:@{@"name": @"allInOneBookList"}
+                                     toEntity:@"BookLists"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } else {
+        NSMutableArray *fetchResults = [[LDBManager sharedManager] takeOutRecordsInEntity:@"BookLists"];
+        for (NSInteger i = 0; i < [fetchResults count]; i++) {
+            BookLists *tempBookLists = fetchResults[i];
+            NSLog(@"%@", tempBookLists.name);
+            NSLog(@"%@", tempBookLists.bookList);
+        }
+    }
+    
+    LHomeViewController *homeView = [[LHomeViewController alloc] init];
+    homeView.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"首页"
+                                                        image:[[UIImage imageNamed:@"home-30x30.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                selectedImage:[UIImage imageNamed:@"home_selected-30x30.png"]];
+    UINavigationController *homeViewNavController = [[UINavigationController alloc] initWithRootViewController:homeView];
+    
+    LBookListsViewController *bookListsView = [[LBookListsViewController alloc] init];
+    bookListsView.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"书单"
+                                                             image:[[UIImage imageNamed:@"bookLists-30x30.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                     selectedImage:[UIImage imageNamed:@"bookLists_selected-30x30.png"]];
+    UINavigationController *bookListsNavController = [[UINavigationController alloc] initWithRootViewController:bookListsView];
+    
+    LEverBorrowingBooksViewController *everBorrowingView = [[LEverBorrowingBooksViewController alloc] init];
+    everBorrowingView.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"借阅"
+                                                                 image:[[UIImage imageNamed:@"everBorrowing-30x30.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                         selectedImage:[UIImage imageNamed:@"everBorrowing_selected-30x30.png"]];
+    UINavigationController *everBorrowingNavController = [[UINavigationController alloc] initWithRootViewController:everBorrowingView];
+    
+    LLoginViewController *loginView = [[LLoginViewController alloc] init];
+    loginView.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我"
+                                                         image:[[UIImage imageNamed:@"login-30x30.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                 selectedImage:[UIImage imageNamed:@"login_selected-30x30.png"]];
+    
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    tabBarController.viewControllers = @[homeViewNavController, bookListsNavController, everBorrowingNavController, loginView];
+    self.window.rootViewController = tabBarController;
+    
     [self.window makeKeyAndVisible];
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     return YES;
 }
 

@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="BookLists" representedClassName="BookLists" syncable="YES">
+        <attribute name="bookList" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="BooksDetailedInfo" representedClassName="BooksDetailedInfo" syncable="YES">
+        <attribute name="bookID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="borrowingID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="detailedInfo" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="BooksImage" representedClassName="BooksImage" syncable="YES">
+        <attribute name="bookID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
+    </entity>
+    <entity name="CacheSearchResults" representedClassName="CacheSearchResults" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="searchResults" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="searchString" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="BooksDetailedInfo" positionX="-54" positionY="-9" width="128" height="118"/>
+        <element name="BooksImage" positionX="27" positionY="108" width="128" height="88"/>
+        <element name="CacheSearchResults" positionX="-9" positionY="72" width="128" height="88"/>
+        <element name="BookLists" positionX="-9" positionY="72" width="128" height="75"/>
+    </elements>
 </model>
