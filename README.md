@@ -1,4 +1,4 @@
 Hust-Library
 ============
 
-My project for Hust-Library
+My project for HustLibrary
